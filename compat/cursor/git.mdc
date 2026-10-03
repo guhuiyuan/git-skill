@@ -1,0 +1,99 @@
+---
+description: |
+  Git 项目管理助手 (Cursor 版):本地仓库与 GitHub/Gitee 之间的端到端工作流。
+  当用户提到 git、提交、commit、push、pull、分支、branch、PR、pull request、issue、
+  上传 GitHub、上传 Gitee、克隆、敏感文件、密钥、token、.env 时激活。
+  内置敏感信息扫描(优先 gitleaks 二进制,内置精简规则兜底)。
+globs:
+  - "**/.git/**"
+  - "**/SKILL.md"
+  - "**/README.md"
+alwaysApply: false
+---
+
+# Git Skill (Cursor)
+
+> Cursor 入口。所有脚本与详细文档都在 `skills/git/`(Claude Code 共享)。
+
+## 安装
+
+```bash
+# 1. 部署脚本到 ~/.local/share/git-skill/(跨平台位置)
+cp -r skills/git ~/.local/share/git-skill
+
+# 2. 让 Cursor 找到规则
+mkdir -p ~/.cursor/rules
+ln -sf "$(pwd)/compat/cursor/git.mdc" ~/.cursor/rules/git.mdc
+```
+
+或者直接复制:
+
+```bash
+mkdir -p ~/.cursor/rules
+cp compat/cursor/git.mdc ~/.cursor/rules/git.mdc
+```
+
+## 触发关键词
+
+git、提交、commit、push、pull、分支、branch、PR、pull request、issue、上传 GitHub、上传 Gitee、克隆、敏感文件、密钥、token、.env、私钥。
+
+## 核心脚本位置
+
+```text
+~/.local/share/git-skill/scripts/
+├── check-secrets.{sh,ps1}        # 三层敏感扫描
+├── git-commit-flow.{sh,ps1}      # 提交流程(扫描+确认)
+├── git-push-flow.{sh,ps1}        # 推送(再扫一次)
+├── git-branch-flow.{sh,ps1}      # 分支管理
+├── git-init-flow.{sh,ps1}        # 完整 init
+├── auth-detect.{sh,ps1}          # 四态降级(CLI/Token/SSH/None)
+├── platform-detect.{sh,ps1}      # github/gitee 路由
+└── _platform/{github,gitee}.{sh,ps1}   # CLI + REST 兜底
+```
+
+## 路由
+
+| 用户说 | 你做 |
+|---|---|
+| "把项目上传到 GitHub" | 依次跑 init → gitignore → commit → `github-create-repo` → push |
+| "推到 Gitee" | 同上,但用 `_platform/gitee` adapter |
+| "新建分支 feature-x" | `git-branch-flow.sh new feature-x --from main` |
+| "扫描有没有密钥" | `check-secrets.sh --staged --severity critical,high,low` |
+| "生成 .gitignore" | `generate-gitignore.sh --auto` |
+| "提个 PR" | `git-pr-flow.sh new -m '...'` |
+| "看下 issue" | `git-issue-flow.sh list` |
+| "认证设置" | `auth-detect.sh --guide` |
+
+## 安全策略(三档)
+
+- **CRITICAL**(真实密钥):**永远阻断**,不可绕过
+- **HIGH**:默认阻断,需 `--force-allow-high` 强制
+- **LOW**:仅警告,继续
+
+## 工作目录规则
+
+- 始终把当前 cwd 当工作目录,**禁止 cd** 到其他目录
+- 非 git 仓库只允许 init / clone
+- 破坏性操作(`reset --hard`、`branch -D`、`push --force`、`stash drop`)必须二次确认
+
+## 详细文档
+
+任何超过 1 段的细节都在 `skills/git/references/`:
+
+- `workflows.md` — 6 个典型场景
+- `command-reference.md` — 完整 verb 列表
+- `auth-guide.md` — 认证 / OS keychain
+- `secret-patterns.md` — 内置规则
+- `platform-gitee.md` — Gitee vs GitHub 差异
+- `troubleshooting.md` — 错误修复
+
+**用 Read 工具按需加载**,不要塞进本规则。
+
+## Cursor 特别说明
+
+Cursor 没有 PreToolUse hook,所以**安全拦截只靠脚本内嵌扫描**。两层防护:
+
+1. **脚本内**:`git-commit-flow` / `git-push-flow` 自动跑 `check-secrets`
+2. **服务侧**:GitHub/Gitee 自身的 push protection(规则更新中)
+
+若想要三层防护(类似 Claude Code 的 PreToolUse hook),需手动配置 `git config core.hooksPath ~/.local/share/git-skill/scripts`,这样裸 `git commit` 也会被 `precommit-guard` 拦截。

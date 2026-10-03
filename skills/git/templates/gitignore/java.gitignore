@@ -1,0 +1,53 @@
+# Java / Maven / Gradle
+# Source: github/gitignore
+
+# Compiled class file
+*.class
+
+# Build outputs
+target/
+build/
+out/
+bin/
+
+# Maven
+.mvn/
+mvnw
+mvnw.cmd
+.mvn/wrapper/maven-wrapper.jar
+
+# Gradle
+.gradle/
+gradle-app.setting
+.gradletasknamecache
+!gradle-wrapper.jar
+
+# IDE — IntelliJ / Eclipse
+.idea/
+*.iml
+*.iws
+*.ipr
+.settings/
+.classpath
+.project
+.factorypath
+.target/
+
+# Spring
+HELP.md
+target/
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# Logs
+*.log
+
+# Environment / secrets
+.env
+.env.*
+*.pem
+*.key
+
+# OS
+.DS_Store
+Thumbs.db

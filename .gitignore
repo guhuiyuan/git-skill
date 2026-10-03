@@ -1,0 +1,22 @@
+# Editor / OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+*.iml
+
+# Build artifacts
+*.bak
+*.tmp
+*.log
+
+# Test outputs
+coverage/
+*.out
+
+# Specific to git-skill repo itself (not the deployed skill)
+test-project/
+*.test-key

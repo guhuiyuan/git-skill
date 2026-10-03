@@ -1,0 +1,20 @@
+# Ensure shell scripts always use LF (Unix) line endings,
+# even on Windows where CRLF is the default.
+# This avoids "env: bash\r: No such file or directory" errors.
+
+*.sh    text eol=lf
+*.bash  text eol=lf
+*.ps1   text eol=lf
+*.cmd   text eol=crlf
+*.bat   text eol=crlf
+
+# Markdown and docs always LF
+*.md    text eol=lf
+*.txt   text eol=lf
+*.toml  text eol=lf
+*.yml   text eol=lf
+*.yaml  text eol=lf
+*.json  text eol=lf
+
+# Templates (used to seed new repos) — force LF
+templates/**  text eol=lf

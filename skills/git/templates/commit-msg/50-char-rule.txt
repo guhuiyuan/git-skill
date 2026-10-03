@@ -1,0 +1,45 @@
+# Conventional Commit + 50-char rule (subject line)
+#
+# Format:
+#   <type>(<scope>): <subject>
+#   │     │         │
+#   │     │         └─► Subject 50 chars max, lowercase, no period
+#   │     └───────────► Optional scope: module, file, or feature area
+#   └─────────────────► Type: feat|fix|docs|style|refactor|perf|test|chore|ci|build
+#
+# Body: wrap at 72 chars per line
+# Footer: References, BREAKING CHANGE, etc.
+#
+# Types:
+#   feat:     A new feature
+#   fix:      A bug fix
+#   docs:     Documentation only changes
+#   style:    Changes that do not affect the meaning of the code (formatting, etc.)
+#   refactor: A code change that neither fixes a bug nor adds a feature
+#   perf:     A code change that improves performance
+#   test:     Adding missing tests or correcting existing tests
+#   chore:    Changes to the build process or auxiliary tools
+#   ci:       Changes to CI configuration files and scripts
+#   build:    Changes that affect the build system or external dependencies
+#
+# Examples:
+#   feat(auth): add JWT token refresh
+#   fix(api): handle null pointer in user lookup
+#   docs: update README with install instructions
+#   refactor(db): extract query builder into separate class
+#   perf: cache user permissions in memory
+#   test(auth): add unit tests for login flow
+#   chore: bump dependencies to latest versions
+#   ci: add GitHub Actions workflow for linting
+#
+# Breaking changes:
+#   Append "!" after type/scope:
+#     feat(api)!: drop support for legacy v1 endpoints
+#   Or include "BREAKING CHANGE:" in footer:
+#     feat(api): redesign authentication flow
+#
+#     BREAKING CHANGE: All clients must now use the new /v2/auth endpoint
+#
+# References:
+#   - https://www.conventionalcommits.org/
+#   - https://github.com/angular/angular/blob/main/CONTRIBUTING.md#commit

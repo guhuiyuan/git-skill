@@ -1,0 +1,86 @@
+# gitleaks configuration for git-skill
+# Used by check-secrets.sh when gitleaks binary is installed.
+# Compatible with gitleaks v8.18.x (uses [allowlist] singular).
+# See: https://github.com/gitleaks/gitleaks/blob/master/config/gitleaks.toml
+
+title = "git-skill gitleaks config"
+
+[extend]
+useDefault = true
+
+# ----- Custom rules (git-skill additions) -----
+[[rules]]
+id = "git-skill-aws-secret-access-key"
+description = "AWS Secret Access Key (git-skill extended)"
+regex = '''(?i)aws(.{0,20})?(secret|sk|key)(.{0,20})?["'][A-Za-z0-9/+=]{40}["']'''
+tags = ["aws", "secret"]
+
+[[rules]]
+id = "git-skill-jwt-token"
+description = "Generic JWT (git-skill extended)"
+regex = '''eyJ[A-Za-z0-9_-]+\.eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+'''
+tags = ["jwt"]
+
+# ----- Allowlist (singular in v8.18.x) -----
+# Strategy: regex allowlist for KNOWN example values + path allowlist for
+# documentation files. Documented in references/secret-patterns.md.
+
+[allowlist]
+description = "git-skill allowlist: known EXAMPLE secrets + doc files + test files"
+
+# Path patterns (works on both Windows \\ and Unix /)
+paths = [
+  # All documentation files
+  '''(?i)\.md$''',
+  '''(?i)[/\\]references[/\\]''',
+  '''(?i)[/\\]templates[/\\]''',
+  '''(?i)[/\\]compat[/\\]''',
+  '''(?i)^README\.md$''',
+  '''(?i)^LICENSE$''',
+  '''(?i)^LICENSE\.md$''',
+  '''(?i)^CONTRIBUTING\.md$''',
+  '''(?i)^SECURITY\.md$''',
+  '''(?i)^CHANGELOG\.md$''',
+  '''(?i)\.gitignore$''',
+  # Test / fixture / example files
+  '''(?i)\.example$''',
+  '''(?i)\.sample$''',
+  '''(?i)\.template$''',
+  '''(?i)\.test\.''',
+  '''(?i)\.spec\.''',
+  '''(?i)_test\.go$''',
+  '''(?i)_test\.py$''',
+  '''(?i)[/\\]tests?[/\\]''',
+  '''(?i)[/\\]__tests__[/\\]''',
+  '''(?i)[/\\]spec[/\\]''',
+  '''(?i)[/\\]fixtures[/\\]''',
+]
+
+# Regex patterns — known EXAMPLE values used in documentation
+regexes = [
+  # AWS docs example
+  '''AKIAIOSFODNN7EXAMPLE''',
+  # GitHub PAT example
+  '''ghp_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa''',
+  # GitHub fine-grained PAT example
+  '''github_pat_11AAAAAA0''',
+  # Stripe live example
+  '''sk_live_[0-9a-zA-Z]{24}EXAMPLE''',
+  # Google API key example
+  '''AIzaSyDOCAbC123dEf456GhI789JkL012MnO345P''',
+  # AWS secret example
+  '''wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY''',
+  # Generic "EXAMPLE" markers
+  '''EXAMPLEKEY''',
+  '''EXAMPLETOKEN''',
+  '''EXAMPLE''',
+  # Test/fixture/example/sample/placeholder markers (case-insensitive)
+  '''(?i)(test|fixture|sample|example|template|dummy|fake|mock|placeholder)''',
+  # Documentation placeholder markers
+  '''(?i)(your[-_]?token|your[-_]?key|<your|<my|<the|placeholder)''',
+  '''<<[A-Z_-]+>>''',
+  # Anthropic/OpenAI key with EXAMPLE
+  '''sk-ant-EXAMPLE''',
+  '''sk-proj-EXAMPLE''',
+  '''sk-EXAMPLE''',
+]

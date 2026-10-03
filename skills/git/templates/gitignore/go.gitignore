@@ -1,0 +1,41 @@
+# Go
+# Source: github/gitignore
+
+# Binaries
+*.exe
+*.exe~
+*.dll
+*.dylib
+*.so
+*.test
+*.out
+
+# Build outputs
+bin/
+dist/
+vendor/
+
+# Go workspace files
+go.work
+go.work.sum
+
+# Test binary / coverage
+*.test
+*.out
+coverage.txt
+coverage.html
+
+# Dependency directories (when not using modules)
+vendor/
+
+# Environment / secrets
+.env
+.env.*
+*.pem
+*.key
+
+# IDE
+.idea/
+.vscode/
+*.swp
+.DS_Store

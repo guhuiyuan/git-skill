@@ -1,0 +1,55 @@
+# .NET / C# / Visual Studio
+# Source: github/gitignore
+
+# Build results
+bin/
+obj/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]uild[Ll]og.*
+[Ll]og/
+
+# Visual Studio
+.vs/
+*.user
+*.userprefs
+*.suo
+*.sln.docstates
+*.userosscache
+*.sln.ide
+
+# Rider / ReSharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# NuGet
+packages/
+*.nupkg
+*.snupkg
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
+
+# Test results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+*.coverage
+*.coveragexml
+
+# Secrets
+*.user
+*.suo
+.env
+appsettings.Development.json
+appsettings.Local.json
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
