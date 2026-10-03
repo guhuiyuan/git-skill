@@ -1,0 +1,9 @@
+# .mailmap — Author identity map
+# Maps any historical/alternate author identities to canonical guhuiyuan.
+# Affects: git log --use-mailmap, git shortlog, GitHub (when present in repo).
+#
+# Format: "Canonical Name <canonical@email>  <old@email>"
+# Multiple old identities can map to one canonical.
+
+guhuiyuan <guhuiyuan@users.noreply.github.com>  <ghy@users.noreply.github.com>
+guhuiyuan <guhuiyuan@users.noreply.github.com>  <ghy@local>
